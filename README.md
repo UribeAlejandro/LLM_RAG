@@ -1,6 +1,14 @@
 # Clementine - Loka
 
 
+## Installation
+
+To install the project, run the following command:
+
+```bash
+make install
+```
+
 ## Data
 
 The data is stored in the `datasets` folder. The data is stored in the following format:
@@ -22,4 +30,3 @@ The data can be pulled from remote using the following command:
 ```bash
 dvc pull
 ```
-
