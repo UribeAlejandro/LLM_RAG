@@ -2,6 +2,11 @@ name: Setup, assess code format and test
 
 on: [ push, pull_request ]
 
+env:
+  MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
+  PINECONE_ENV: ${{ secrets.PINECONE_ENV }}
+  PINECONE_API_KEY: ${{ secrets.PINECONE_API_KEY }}
+
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -12,10 +17,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.11.3
-        env:
-          MLFLOW_TRACKING_URI: ${{ secrets.MLFLOW_TRACKING_URI }}
-          PINECONE_ENV: ${{ secrets.PINECONE_ENV }}
-          PINECONE_API_KEY: ${{ secrets.PINECONE_API_KEY }}
 
       - name: Checkout repository code
         uses: actions/checkout@v3
