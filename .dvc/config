@@ -1,0 +1,4 @@
+[core]
+    remote = clementine-data
+['remote "clementine-data"']
+    url = gs://clementine-loka/data

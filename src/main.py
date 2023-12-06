@@ -1,2 +1,10 @@
+from dotenv import load_dotenv
+
+from src.data.etl import extract, load, transform
+
+load_dotenv()
+
 if __name__ == "__main__":
-    print("Hello World!")
+    documents = extract()
+    texts = transform(documents)
+    load(texts)

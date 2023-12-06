@@ -6,3 +6,4 @@ black[jupyter]
 isort
 docformatter
 pytest
+python-dotenv
