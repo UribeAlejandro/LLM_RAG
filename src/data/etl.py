@@ -8,7 +8,7 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Pinecone
 from langchain_core.documents import Document
 
-from src.constants import CHUNK_SIZE, EMBEDDINGS_DIM_GPT4ALL, EMBEDDINGS_METRIC, INDEX_NAME
+from src.constants import CHUNK_SIZE, EMBEDDINGS_METRIC, INDEX_NAME
 
 
 def extract() -> List[Document]:
@@ -28,6 +28,9 @@ def transform(documents: List[Document]) -> List[Document]:
 def load(texts: List[Document]) -> None:
     """Generate embeddings and upload to destination."""
     embeddings = GPT4AllEmbeddings()
+    test_texts = ["this is the first chunk of text", "then another second chunk of text is here"]
+
+    res = embeddings.embed_documents(test_texts)
 
     pinecone.init(
         api_key=os.getenv("PINECONE_API_KEY"),
@@ -35,6 +38,6 @@ def load(texts: List[Document]) -> None:
     )
 
     if INDEX_NAME not in pinecone.list_indexes():
-        pinecone.create_index(INDEX_NAME, dimension=EMBEDDINGS_DIM_GPT4ALL, metric=EMBEDDINGS_METRIC)
+        pinecone.create_index(INDEX_NAME, dimension=len(res[0]), metric=EMBEDDINGS_METRIC)
 
     Pinecone.from_documents(texts, embeddings, index_name=INDEX_NAME)
