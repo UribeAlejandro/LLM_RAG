@@ -1,0 +1,3 @@
+INDEX_NAME = "clementine-loka"
+EMBEDDINGS_METRIC = "cosine"
+EMBEDDINGS_DIM_GPT4ALL = 384
