@@ -1,9 +1,10 @@
 from dotenv import load_dotenv
 
-from src.data.etl import embeddings_from_documents, extract
+from src.data.etl import extract, load, transform
 
 load_dotenv()
 
 if __name__ == "__main__":
-    texts = extract()
-    embeddings_from_documents(texts)
+    documents = extract()
+    texts = transform(documents)
+    load(texts)

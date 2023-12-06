@@ -8,21 +8,24 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Pinecone
 from langchain_core.documents import Document
 
-from src.constants import EMBEDDINGS_DIM_GPT4ALL, EMBEDDINGS_METRIC, INDEX_NAME
+from src.constants import CHUNK_SIZE, EMBEDDINGS_DIM_GPT4ALL, EMBEDDINGS_METRIC, INDEX_NAME
 
 
 def extract() -> List[Document]:
-    """Extract datasets from source."""
+    """Extract documents from source."""
     loader = DirectoryLoader(path="datasets/raw", glob="*.md")
     documents = loader.load()
+    return documents
 
-    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+
+def transform(documents: List[Document]) -> List[Document]:
+    """Transform documents."""
+    text_splitter = CharacterTextSplitter(chunk_size=CHUNK_SIZE, chunk_overlap=0)
     texts = text_splitter.split_documents(documents)
-
     return texts
 
 
-def embeddings_from_documents(texts: List[Document]) -> None:
+def load(texts: List[Document]) -> None:
     """Generate embeddings and upload to destination."""
     embeddings = GPT4AllEmbeddings()
 

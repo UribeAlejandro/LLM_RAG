@@ -30,3 +30,11 @@ The data can be pulled from remote using the following command:
 ```bash
 dvc pull
 ```
+
+## Extract, transform, load
+
+The ETL process consists of the following steps:
+
+- `extract`: Reads the files matching the `datasets/raw/*.md` glob pattern.
+- `transform`: The documents are split and chunked into a specified length. The chunks are then vectorized using an embedding model.
+- `load`: The embeddings are uploaded to a `Pinecone` index.
