@@ -25,20 +25,12 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements_dev.txt ]; then pip install -r requirements_dev.txt; fi
 
-  assess_code_format:
-      needs: setup
-      runs-on: ubuntu-latest
-      steps:
-        - name: Code quality checks
-          run: |
-            isort --check-only .
-            black --check .
-            ruff check .
+      - name: Code quality checks
+        run: |
+          isort --check-only .
+          black --check .
+          ruff check .
 
-  test:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
       - name: Test with pytest
         run: |
           python -m pytest
