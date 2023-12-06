@@ -1,10 +1,9 @@
-name: Assess code format
+name: Setup, assess code format and test
 
 on: [ push, pull_request ]
 
 jobs:
-  build:
-
+  setup:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -26,12 +25,18 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements_dev.txt ]; then pip install -r requirements_dev.txt; fi
 
-      - name: Code quality checks
-        run: |
-          isort --check-only .
-          black --check .
-          ruff check .
+  assess_code_format:
+      needs: setup
+      runs-on: ubuntu-latest
+      steps:
+        - name: Code quality checks
+          run: |
+            make lint
 
+  test:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
       - name: Test with pytest
         run: |
-          pytest tests/
+          make test
