@@ -31,7 +31,9 @@ jobs:
       steps:
         - name: Code quality checks
           run: |
-            make lint
+            isort --check-only .
+            black --check .
+            ruff check .
 
   test:
     needs: setup
@@ -39,4 +41,4 @@ jobs:
     steps:
       - name: Test with pytest
         run: |
-          make test
+          python -m pytest
