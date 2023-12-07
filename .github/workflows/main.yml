@@ -18,6 +18,9 @@ jobs:
         with:
           python-version: 3.11.3
 
+      - name: Checkout repository code
+        uses: actions/checkout@v3
+
       - name: Configure GCP credentials
         uses: 'google-github-actions/auth@v1'
         with:
@@ -29,9 +32,6 @@ jobs:
       - name: pull DVC
         run: |
           dvc pull datasets/test
-
-      - name: Checkout repository code
-        uses: actions/checkout@v3
 
       - name: Install dependencies
         run: |
