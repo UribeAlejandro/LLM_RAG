@@ -1,7 +1,5 @@
-import os
 from typing import List
 
-import pinecone
 from langchain.document_loaders import DirectoryLoader
 from langchain.embeddings import GPT4AllEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
