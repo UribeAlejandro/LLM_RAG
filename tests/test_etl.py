@@ -1,10 +1,11 @@
-import os
-
 import pinecone
 import pytest
 from dotenv import load_dotenv
+from langchain.embeddings import GPT4AllEmbeddings
 
-from src.constants import EMBEDDINGS_DIM_GPT4ALL, EMBEDDINGS_METRIC, INDEX_NAME
+from src.constants import EMBEDDINGS_DIM_GPT4ALL, EMBEDDINGS_METRIC, INDEX_NAME, PATH_TEST_FILES
+from src.data.etl import extract, transform
+from src.data.utils import vector_store_init
 
 load_dotenv()
 
@@ -12,11 +13,26 @@ load_dotenv()
 @pytest.fixture(scope="session", autouse=True)
 def init():
     """Initialize Pinecone client."""
-    pinecone.init(
-        api_key=os.getenv("PINECONE_API_KEY"),
-        environment=os.getenv("PINECONE_ENV"),
-    )
-    yield
+    embeddings = vector_store_init(INDEX_NAME)
+    return embeddings
+
+
+def test_init(init):
+    """Check if the Pinecone client is initialized."""
+    assert isinstance(init, GPT4AllEmbeddings)
+
+
+def test_extract():
+    """Check if the raw data is extracted."""
+    documents = extract(PATH_TEST_FILES)
+    assert len(documents) == 1
+
+
+def test_transform():
+    """Check if the raw data is transformed."""
+    documents = extract(PATH_TEST_FILES)
+    texts = transform(documents, 1000)
+    assert len(texts) == 1
 
 
 def test_index_name(init):
