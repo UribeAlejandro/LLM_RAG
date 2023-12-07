@@ -4,7 +4,3 @@ langchain==0.0.346
 pinecone-client==2.2.4
 unstructured==0.11.2
 gpt4all==2.0.2
-tiktoken==0.5.2
-evaluate==0.4.1
-textstat
-rouge-score
