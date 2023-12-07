@@ -1,6 +1,8 @@
 import os
 
 import pinecone
+
+# from langchain import hub
 from langchain.chains import RetrievalQA
 from langchain.embeddings import GPT4AllEmbeddings
 from langchain.llms import GPT4All
@@ -23,6 +25,7 @@ def pinecone_init():
 
 def build_chain(model: str, vectorstore: Pinecone):
     llm = GPT4All(model=model)
+    # rag_prompt = hub.pull("rlm/rag-prompt")
     qa = RetrievalQA.from_chain_type(
         llm=llm, chain_type="stuff", retriever=vectorstore.as_retriever(), return_source_documents=True
     )

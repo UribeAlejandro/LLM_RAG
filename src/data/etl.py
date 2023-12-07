@@ -8,12 +8,12 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Pinecone
 from langchain_core.documents import Document
 
-from src.constants import CHUNK_SIZE, EMBEDDINGS_METRIC, INDEX_NAME
+from src.constants import CHUNK_SIZE, EMBEDDINGS_METRIC, EMBEDDINGS_MODEL_PATH, INDEX_NAME, PATH_RAW_FILES, TEST_TEXTS
 
 
 def extract() -> List[Document]:
     """Extract documents from source."""
-    loader = DirectoryLoader(path="datasets/raw", glob="*.md")
+    loader = DirectoryLoader(path=PATH_RAW_FILES, glob="*.md")
     documents = loader.load()
     return documents
 
@@ -27,10 +27,8 @@ def transform(documents: List[Document]) -> List[Document]:
 
 def load(texts: List[Document]) -> None:
     """Generate embeddings and upload to destination."""
-    embeddings = GPT4AllEmbeddings()
-    test_texts = ["this is the first chunk of text", "then another second chunk of text is here"]
-
-    res = embeddings.embed_documents(test_texts)
+    embeddings = GPT4AllEmbeddings(model=EMBEDDINGS_MODEL_PATH)
+    res = embeddings.embed_documents(TEST_TEXTS)
 
     pinecone.init(
         api_key=os.getenv("PINECONE_API_KEY"),
