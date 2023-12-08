@@ -5,7 +5,7 @@ from langchain.embeddings import GPT4AllEmbeddings
 
 from src.constants import EMBEDDINGS_DIM_GPT4ALL, EMBEDDINGS_METRIC, INDEX_NAME, PATH_TEST_FILES
 from src.data.etl import extract, transform
-from src.data.utils import vector_store_init
+from src.data.utils import embeddings_model, vector_store_init
 
 load_dotenv()
 
@@ -13,7 +13,8 @@ load_dotenv()
 @pytest.fixture(scope="session", autouse=True)
 def init():
     """Initialize Pinecone client."""
-    embeddings = vector_store_init(INDEX_NAME)
+    vector_store_init(INDEX_NAME)
+    embeddings = embeddings_model()
     return embeddings
 
 

@@ -1,0 +1,11 @@
+service: "src/serving/service.py:svc"
+labels:
+    owner: uribealejandro
+    stage: dev
+include:
+  - "src/serving/service.py"
+python:
+  packages:
+    - openllm
+models:
+  -  pt-google--flan-t5-small:latest
