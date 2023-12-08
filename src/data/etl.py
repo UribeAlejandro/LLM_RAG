@@ -2,11 +2,11 @@ from typing import List
 
 from langchain.document_loaders import DirectoryLoader
 from langchain.embeddings import GPT4AllEmbeddings
-from langchain.text_splitter import CharacterTextSplitter
+from langchain.text_splitter import MarkdownTextSplitter
 from langchain.vectorstores import Pinecone
 from langchain_core.documents import Document
 
-from src.data.utils import vector_store_init
+from src.data.utils import embeddings_model, vector_store_init
 
 
 def extract(path: str) -> List[Document]:
@@ -40,8 +40,9 @@ def transform(documents: List[Document], chunk_size: int) -> List[Document]:
     List[Document]
         List of documents
     """
-    text_splitter = CharacterTextSplitter(chunk_size=chunk_size, chunk_overlap=0)
+    text_splitter = MarkdownTextSplitter(chunk_size=chunk_size, chunk_overlap=0)
     texts = text_splitter.split_documents(documents)
+
     return texts
 
 
@@ -72,7 +73,10 @@ def run_etl(path_raw_files: str, index_name: str, chunk_size: int) -> None:
     chunk_size: int
         Chunk size for splitting documents
     """
+    vector_store_init(index_name)
+    embeddings = embeddings_model()
+
     documents = extract(path_raw_files)
     texts = transform(documents, chunk_size)
-    embeddings = vector_store_init(index_name)
+
     load(texts, embeddings, index_name)
