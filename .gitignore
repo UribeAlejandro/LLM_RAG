@@ -6,6 +6,7 @@
 .vscode/
 *.gguf
 *.db
+.terraform/
 
 
 # Byte-compiled / optimized / DLL files
