@@ -5,6 +5,7 @@
 *.csv
 .vscode/
 *.gguf
+*.db
 
 
 # Byte-compiled / optimized / DLL files
