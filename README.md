@@ -1,4 +1,4 @@
-# Clementine - Loka <!-- omit in toc -->
+# LLM - Retrieval-Augmented Generation *aka* `RAG` <!-- omit in toc -->
 
 This project is part of the interviewing process for the position of Machine Learning Engineer at Loka. The goal of the project is to build a question answering system using a language model able to answer questions about the content of the documents provided.
 
