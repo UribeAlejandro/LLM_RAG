@@ -1,52 +1,52 @@
-from __future__ import annotations
+import time
+from functools import lru_cache
 
-import uuid
-from typing import Any, AsyncGenerator, Dict, TypedDict, Union
+import streamlit as st
+from dotenv import load_dotenv
 
-from bentoml import Service
-from bentoml.io import JSON, Text
-from openllm import LLM
+from src.constants import INDEX_NAME, MODEL_PATH
+from src.model.rag import create_rag_model, load_retriever
 
-llm = LLM[Any, Any]("google/flan-t5-small", backend="pt")
-
-
-svc = Service("tinyllm", runners=[llm.runner])
+load_dotenv()
 
 
-class GenerateInput(TypedDict):
-    prompt: str
-    stream: bool
-    sampling_params: Dict[str, Any]
+@lru_cache
+def get_lmm():
+    retriever = load_retriever(INDEX_NAME)
+    rag_model = create_rag_model(MODEL_PATH, retriever)
+    return rag_model
 
 
-@svc.api(
-    route="/v1/generate",
-    input=JSON.from_sample(
-        GenerateInput(
-            prompt="What is time?",
-            stream=False,
-            sampling_params={"temperature": 0.73, "logprobs": 1},
-        )
-    ),
-    output=Text(content_type="text/event-stream"),
-)
-async def generate(request: GenerateInput) -> Union[AsyncGenerator[str, None], str]:
-    n = request["sampling_params"].pop("n", 1)
-    request_id = f"tinyllm-{uuid.uuid4().hex}"
-    previous_texts = [[]] * n
+def stream_response(text: str):
+    for word in text.split():
+        yield word + " "
+        time.sleep(0.05)
 
-    generator = llm.generate_iterator(request["prompt"], request_id=request_id, n=n, **request["sampling_params"])
 
-    async def streamer() -> AsyncGenerator[str, None]:
-        async for request_output in generator:
-            for output in request_output.outputs:
-                i = output.index
-                previous_texts[i].append(output.text)
-                yield output.text
+model = get_lmm()
 
-    if request["stream"]:
-        return streamer()
+st.header("AWS documentation assistant", divider="rainbow")
+st.caption("Welcome to the AWS documentation assistant. Ask me anything about AWS and I will try to help you.")
 
-    async for _ in streamer():
-        pass
-    return "".join(previous_texts[0])
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# Display chat messages from history on app rerun
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+# Accept user input
+if prompt := st.chat_input("Your question here"):
+    # Add user message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    # Display user message in chat message container
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    # Display assistant response in chat message container
+    with st.chat_message("assistant"):
+        response = model.run(prompt)
+        st.write_stream(stream_response(response))
+    # Add assistant response to chat history
+    st.session_state.messages.append({"role": "assistant", "content": response})
