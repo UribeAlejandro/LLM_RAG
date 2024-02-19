@@ -3,7 +3,7 @@ import os
 import pinecone
 from langchain.embeddings import GPT4AllEmbeddings
 
-from src.constants import EMBEDDINGS_METRIC, EMBEDDINGS_MODEL_PATH, INDEX_NAME, TEST_TEXTS
+from src.constants import EMBEDDINGS_METRIC, INDEX_NAME, TEST_TEXTS
 
 
 def vector_store_init(index_name: str) -> None:
@@ -45,5 +45,5 @@ def embeddings_model() -> GPT4AllEmbeddings:
     GPT4AllEmbeddings
         Embeddings model
     """
-    embeddings = GPT4AllEmbeddings(model=EMBEDDINGS_MODEL_PATH)
+    embeddings = GPT4AllEmbeddings()
     return embeddings

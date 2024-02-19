@@ -12,4 +12,10 @@ lint:
 test:
 	python -m pytest -v
 
+run_rest_api:
+	python -m src.serving.rest_api
+
+run_frontend:
+	python -m streamlit run src/serving/frontend.py
+
 all: install lint test

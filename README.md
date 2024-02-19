@@ -1,6 +1,7 @@
 # LLM - Retrieval-Augmented Generation *aka* `RAG` <!-- omit in toc -->
+This project is part of the interviewing process for the position of Machine Learning Engineer. The goal of the project is to build a question answering system using a language model able to answer questions about the content of the documents provided.
 
-This project is part of the interviewing process for the position of Machine Learning Engineer at Loka. The goal of the project is to build a question answering system using a language model able to answer questions about the content of the documents provided.
+![Frontend](img/frontend.gif)
 
 ## Table of Contents <!-- omit in toc -->
 
@@ -32,6 +33,28 @@ To install the project, run the following command:
 make install
 make download_models
 ```
+
+## Usage
+
+To use the project, run the following command:
+
+```bash
+make run_frontend
+```
+
+Then, open the browser and go to `http://localhost:8501/` to use the application.
+
+![Frontend](img/frontend.gif)
+
+You can also try the REST API using the following command:
+
+```bash
+make run_rest_api
+```
+
+Then, open the browser and go to `http://localhost:8000/docs` to use the application.
+
+![REST_API](img/rest_api.gif)
 
 ## Test
 
@@ -173,7 +196,7 @@ You should get a similar output:
 
 ```bash
 api_version: v1
-name: clementine-loka
+name: rag-app
 operator:
   name: aws-sagemaker
 template: terraform
