@@ -1,6 +1,6 @@
 mlflow==2.10.2
 dvc[gs]==3.32.0
-langchain==0.0.346
+langchain==0.1.7
 pinecone-client==2.2.4
 unstructured==0.11.2
 gpt4all==2.0.2
@@ -13,3 +13,6 @@ bentoctl==0.4.0
 python-dotenv~=1.0.0
 openllm==0.4.35
 streamlit==1.31.1
+uvicorn==0.24.0.post1
+fastapi==0.109.2
+langserve==0.0.41

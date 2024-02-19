@@ -1,9 +1,9 @@
-service: "src/serving/service.py:svc"
+service: "src/serving/frontend.py:svc"
 labels:
     owner: uribealejandro
     stage: dev
 include:
-  - "src/serving/service.py"
+  - "src/serving/frontend.py"
 python:
   packages:
     - openllm

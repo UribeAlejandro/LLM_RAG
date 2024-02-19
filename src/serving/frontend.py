@@ -1,20 +1,11 @@
 import time
-from functools import lru_cache
 
 import streamlit as st
 from dotenv import load_dotenv
 
-from src.constants import INDEX_NAME, MODEL_PATH
-from src.model.rag import create_rag_model, load_retriever
+from src.serving.utils import get_lmm
 
 load_dotenv()
-
-
-@lru_cache
-def get_lmm():
-    retriever = load_retriever(INDEX_NAME)
-    rag_model = create_rag_model(MODEL_PATH, retriever)
-    return rag_model
 
 
 def stream_response(text: str):
@@ -46,7 +37,7 @@ if prompt := st.chat_input("Your question here"):
 
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
-        response = model.run(prompt)
+        response = model.invoke(prompt)
         st.write_stream(stream_response(response))
     # Add assistant response to chat history
     st.session_state.messages.append({"role": "assistant", "content": response})
