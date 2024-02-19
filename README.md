@@ -147,7 +147,7 @@ bentoml list
 The serving of the model is done using `BentoML`, to serve the model, run the following command:
 
 ```bash
-bentoml serve src/serving/service.py
+bentoml serve src/serving/frontend.py
 ```
 
 ## Deployment
